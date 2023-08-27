@@ -1,10 +1,10 @@
 import "./index.css";
 import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
 import { Nav } from "./components/nav";
-import { Home } from "./pages/home/home";
 import HighScores from "./pages/highscores/highscores";
 import SharedCalculator from "./pages/sharedCalculator/sharedCalculator";
 import Screenshots from "./pages/screenshots/screenshots";
+import Characters from "./pages/chars/chars";
 
 function App() {
   return (
@@ -12,7 +12,7 @@ function App() {
       <BrowserRouter>
         <Nav />
         <Routes>
-          <Route path="/tibiadia" element={<Home />} />
+          <Route path="/tibiadia" element={<Characters />} />
           <Route path="/highscores" element={<HighScores />} />
           <Route path="/calculator" element={<SharedCalculator />} />
           <Route path="/screenshots" element={<Screenshots />} />

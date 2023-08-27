@@ -41,11 +41,29 @@ export default function CollapsibleTable({
 }: {
   characters: CharsT[];
 }) {
-  const [open, setOpen] = useState<boolean>(false);
+  const [openRows, setOpenRows] = useState<boolean[]>(
+    Array(characters.length).fill(false)
+  );
+
+  const toggleDetails = (index: number) => {
+    const updatedOpenRows = [...openRows];
+    updatedOpenRows[index] = !updatedOpenRows[index];
+    setOpenRows(updatedOpenRows);
+  };
   return (
     <TableContainer
       component={Paper}
-      sx={{ width: "80%", m: "30px 0 50px", backgroundColor: "grey.900" }}
+      sx={{
+        width: "80%",
+        m: "30px 0 50px",
+        backgroundColor: "grey.900",
+        "@media (max-width: 600px)": {
+          width: "90%",
+        },
+        "@media (max-width: 400px)": {
+          width: "95%",
+        },
+      }}
     >
       <Table aria-label="collapsible table">
         <TableHead>
@@ -57,6 +75,11 @@ export default function CollapsibleTable({
                 fontWeight: "bold",
                 fontSize: "15px",
                 width: "70px",
+                "@media (max-width: 400px)": {
+                  padding: 0,
+                  width: "40px",
+                  pl: "5px",
+                },
               }}
             >
               Name
@@ -68,6 +91,10 @@ export default function CollapsibleTable({
                 fontWeight: "bold",
                 fontSize: "15px",
                 width: "70px",
+                "@media (max-width: 400px)": {
+                  padding: 0,
+                  width: "40px",
+                },
               }}
             >
               Level
@@ -79,6 +106,10 @@ export default function CollapsibleTable({
                 fontWeight: "bold",
                 fontSize: "15px",
                 width: "70px",
+                "@media (max-width: 400px)": {
+                  padding: 0,
+                  width: "40px",
+                },
               }}
             >
               Vocation
@@ -91,6 +122,11 @@ export default function CollapsibleTable({
                 color: "#fff",
                 fontWeight: "bold",
                 fontSize: "15px",
+                "@media (max-width: 400px)": {
+                  padding: 0,
+                  width: "30px",
+                  pr: "5px",
+                },
               }}
             >
               Details
@@ -106,11 +142,7 @@ export default function CollapsibleTable({
                 character.character.vocation === "Knight"
                   ? "Knight z Vestii"
                   : character.character.vocation;
-
-              const toggleDetails = () => {
-                setOpen(!open);
-              };
-
+              const isOpen = openRows[index];
               // level
               const level = character.character.level;
               const minLevel = Math.ceil(level / 1.5);
@@ -141,7 +173,13 @@ export default function CollapsibleTable({
                 ) {
                   return (
                     <div>
-                      <p>
+                      <p
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                        }}
+                      >
                         <FavoriteIcon
                           style={{
                             fontSize: "16px",
@@ -171,7 +209,13 @@ export default function CollapsibleTable({
                 ) {
                   return (
                     <div>
-                      <p>
+                      <p
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                        }}
+                      >
                         <FavoriteIcon
                           style={{
                             fontSize: "16px",
@@ -182,7 +226,13 @@ export default function CollapsibleTable({
                         />
                         {maxHpSorcerer}
                       </p>
-                      <p style={{ display: "flex", flexDirection: "row" }}>
+                      <p
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                        }}
+                      >
                         <GiPotionBall
                           style={{
                             fontSize: "16px",
@@ -201,18 +251,33 @@ export default function CollapsibleTable({
                 ) {
                   return (
                     <div>
-                      <p>
+                      <p
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                        }}
+                      >
                         <FavoriteIcon
                           style={{
                             fontSize: "16px",
                             marginBottom: "2px",
                             marginRight: "2px",
                             color: "red",
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
                           }}
                         />
                         {maxHpRp}
                       </p>
-                      <p style={{ display: "flex", flexDirection: "row" }}>
+                      <p
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                        }}
+                      >
                         <GiPotionBall
                           style={{
                             fontSize: "16px",
@@ -231,7 +296,13 @@ export default function CollapsibleTable({
                 ) {
                   return (
                     <div>
-                      <p>
+                      <p
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                        }}
+                      >
                         <FavoriteIcon
                           style={{
                             fontSize: "16px",
@@ -242,7 +313,13 @@ export default function CollapsibleTable({
                         />
                         {maxHpDruid}
                       </p>
-                      <p style={{ display: "flex", flexDirection: "row" }}>
+                      <p
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                        }}
+                      >
                         <GiPotionBall
                           style={{
                             fontSize: "16px",
@@ -263,22 +340,25 @@ export default function CollapsibleTable({
                   <TableRow>
                     <TableCell
                       component="th"
-                      scope="columns"
+                      scope="row"
                       sx={{ pl: 3, color: "#fff", width: "70px" }}
                     >
                       <a
                         href={`https://www.tibia.com/community/?name=${character.character.name}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        style={{ display: "flex", alignItems: "center" }}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                        }}
                       >
                         <img
                           src={tibiaComIcon}
                           alt="Tibia Icon"
                           style={{
                             marginRight: "3px",
-                            width: "13px",
-                            height: "13px",
+                            width: "15px",
+                            height: "15px",
                           }}
                         />
 
@@ -305,9 +385,9 @@ export default function CollapsibleTable({
                       <IconButton
                         aria-label="expand row"
                         size="small"
-                        onClick={() => toggleDetails()}
+                        onClick={() => toggleDetails(index)}
                       >
-                        {open ? (
+                        {isOpen ? (
                           <KeyboardArrowUpIcon sx={{ color: "#fff" }} />
                         ) : (
                           <KeyboardArrowDownIcon sx={{ color: "#fff" }} />
@@ -315,16 +395,16 @@ export default function CollapsibleTable({
                       </IconButton>
                     </TableCell>
                   </TableRow>
-                  {open && (
+                  {isOpen && (
                     <TableRow>
                       <TableCell
                         style={{ paddingBottom: 0, paddingTop: 0 }}
                         colSpan={4}
                       >
-                        <Collapse in={open} timeout="auto" unmountOnExit>
+                        <Collapse in={isOpen} timeout="auto" unmountOnExit>
                           <Box
                             sx={{
-                              margin: 1,
+                              marginBottom: "20px",
                               color: "#fff",
                               display: "flex",
                             }}
@@ -351,7 +431,13 @@ export default function CollapsibleTable({
                                 Stats:
                               </h4>
                               <p>{professionManaHp()}</p>
-                              <p>
+                              <p
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "row",
+                                  alignItems: "center",
+                                }}
+                              >
                                 <ShieldIcon
                                   style={{
                                     fontSize: "16px",

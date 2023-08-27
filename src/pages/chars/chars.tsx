@@ -2,7 +2,7 @@
 
 import { Loading } from "../../components/loading";
 import CollapsibleTable from "../../components/table";
-import { Box } from "@mui/material";
+import { Box, Divider, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 
 type CharsT = {
@@ -78,8 +78,30 @@ const Characters: React.FC = () => {
         alignItems: "center",
       }}
     >
-      <h1 style={{ fontSize: "34px", marginTop: "100px" }}>Characters</h1>
-
+      <Typography
+        variant="h1"
+        sx={{
+          fontSize: "34px",
+          marginBottom: "2px",
+          marginTop: "70px",
+          "@media (max-width: 400px)": {
+            fontSize: "28px",
+          },
+        }}
+      >
+        Characters
+      </Typography>
+      <Divider
+        sx={{
+          width: "10%",
+          bgcolor: "#fff",
+          marginBottom: "20px",
+          height: "0.5px",
+          "@media (max-width: 600px)": {
+            width: "20%",
+          },
+        }}
+      />
       <CollapsibleTable characters={characters} />
       {isLoading && (
         <Box

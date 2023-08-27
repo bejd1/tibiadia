@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Divider, Typography } from "@mui/material";
 import React, { useState } from "react";
 
 const SharedCalculator = () => {
@@ -18,13 +18,22 @@ const SharedCalculator = () => {
   };
 
   return (
-    <Box sx={{ marginBottom: "33px", padding: "0 20px" }}>
+    <Box
+      sx={{
+        marginBottom: "33px",
+        padding: "0 20px",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <Typography
         variant="h1"
         sx={{
           fontSize: "34px",
-          marginTop: "60px",
-          marginBottom: "20px",
+          marginTop: "70px",
+          marginBottom: "2px",
           "@media (max-width: 992px)": {
             marginTop: "90px",
           },
@@ -35,6 +44,17 @@ const SharedCalculator = () => {
       >
         Shared calculator
       </Typography>
+      <Divider
+        sx={{
+          width: "10%",
+          bgcolor: "#fff",
+          marginBottom: "20px",
+          height: "0.5px",
+          "@media (max-width: 600px)": {
+            width: "20%",
+          },
+        }}
+      />
       <Box>
         <form onSubmit={setNewNum}>
           <input
@@ -57,7 +77,7 @@ const SharedCalculator = () => {
               border: "none",
               padding: "3px 10px",
               borderRadius: "6px",
-              fontSize: "16px",
+              fontSize: "15px",
               cursor: "pointer",
               letterSpacing: "0.3px",
               marginLeft: "10px",
@@ -66,6 +86,7 @@ const SharedCalculator = () => {
                 marginLeft: "0",
                 width: "70%",
               },
+              "&:hover": { backgroundColor: "#03b303" },
             }}
             type="submit"
             onClick={() => setShowText(true)}

@@ -1,7 +1,7 @@
-import { Box } from "@mui/material";
 import { useEffect, useState } from "react";
 import tibiaComIcon from "../../images/tibiaIcon.png";
 import { Loading } from "../../components/loading";
+import { Box, Divider, Link, Typography } from "@mui/material";
 
 type HighScoreT = {
   highscores: HighScoreTTT;
@@ -17,6 +17,7 @@ type HighScoreTT = {
   name: string;
   vocation: string;
   level: number;
+  vocationAbbreviation: string;
 };
 
 const HighScores = () => {
@@ -39,66 +40,130 @@ const HighScores = () => {
   }, []);
 
   return (
-    <div
-      style={{
+    <Box
+      sx={{
         display: "flex",
         justifyContent: "center",
         flexDirection: "column",
         alignItems: "center",
+        padding: "0 10px",
       }}
     >
-      <h1 style={{ fontSize: "34px", marginBottom: "20px", marginTop: "60px" }}>
+      <Typography
+        variant="h1"
+        sx={{
+          fontSize: "34px",
+          marginBottom: "2px",
+          marginTop: "70px",
+          "@media (max-width: 400px)": {
+            fontSize: "28px",
+          },
+        }}
+      >
         HighScore
-      </h1>
+      </Typography>
+      <Divider
+        sx={{
+          width: "10%",
+          bgcolor: "#fff",
+          marginBottom: "20px",
+          height: "0.5px",
+          "@media (max-width: 600px)": {
+            width: "20%",
+          },
+        }}
+      />
       <Box
         sx={{
           boxShadow: "0 3px 10px rgb(0 0 0 / 0.2)",
           borderRadius: "10px",
-          maxWidth: "600px",
           bgcolor: "#212121",
-          p: 3,
+          padding: "25px",
+          "@media (max-width: 600px)": {
+            padding: "15px",
+          },
         }}
       >
         {highScores ? (
           highScores.highscores.highscore_list
-            .slice(0, 5)
-            .map((player, index) => (
-              <Box key={index} sx={{ display: "flex", marginBottom: "2px" }}>
-                <p style={{ fontWeight: "bold", marginRight: "3px" }}>
-                  {player.rank}.{" "}
-                </p>
-                <a
-                  href={`https://www.tibia.com/community/?name=${player.name}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ display: "flex", alignItems: "center" }}
+            .slice(0, 10)
+            .map((player, index) => {
+              return (
+                <Box
+                  key={index}
+                  sx={{
+                    display: "flex",
+                    marginBottom: "2px",
+                    alignItems: "center",
+                  }}
                 >
-                  <img
-                    src={tibiaComIcon}
-                    alt="Tibia Icon"
+                  <Typography
                     style={{
+                      fontWeight: "bold",
                       marginRight: "3px",
-                      width: "13px",
-                      height: "13px",
+                      fontSize: "14px",
                     }}
-                  />
+                  >
+                    {player.rank}.{" "}
+                  </Typography>
+                  <Link
+                    href={`https://www.tibia.com/community/?name=${player.name}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "left",
+                      textDecoration: "none",
+                      color: "#fff",
+                      fontFamily: "Roboto, sans-serif",
+                      marginRight: "5px",
+                      "@media (max-width: 400px)": {
+                        fontSize: "13px",
+                        width: "100%",
+                      },
+                    }}
+                  >
+                    <img
+                      src={tibiaComIcon}
+                      alt="Tibia Icon"
+                      style={{
+                        marginRight: "3px",
+                        width: "15px",
+                        height: "15px",
+                      }}
+                    />
+                    {player.name + ","}
+                  </Link>
+                  <Typography
+                    sx={{
+                      marginRight: "3px",
+                      "@media (max-width: 600px)": {
+                        display: "none",
+                      },
+                    }}
+                  >
+                    Vocation: {player.vocation},
+                  </Typography>
 
-                  {player.name}
-                </a>
-                <p style={{ marginRight: "3px" }}>
-                  , Vocation: {player.vocation},{" "}
-                </p>
-                <p>
-                  Level:
-                  {" " + player.level}
-                </p>
-              </Box>
-            ))
+                  <Typography
+                    sx={{
+                      "@media (max-width: 400px)": {
+                        fontSize: "13px",
+                      },
+                    }}
+                  >
+                    Level:
+                    {" " + player.level}
+                  </Typography>
+                </Box>
+              );
+            })
         ) : (
           <Loading />
         )}
       </Box>
-    </div>
+    </Box>
   );
 };
 
