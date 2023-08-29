@@ -1,9 +1,9 @@
 import { Box, Divider, Typography } from "@mui/material";
-import { useMutation, useQuery } from "react-query";
+import { useQuery } from "react-query";
 import axios from "axios";
-import NestedModal from "../../components/modal";
 import { Loading } from "../../components/loading";
-import { useState } from "react";
+// import NestedModal from "../../components/modal";
+// import { useState } from "react";
 // import { v4 as uuidv4 } from "uuid";
 
 interface Todo {
@@ -13,17 +13,17 @@ interface Todo {
   title: string;
 }
 
-interface PostI {
-  id?: string;
-  title: string;
-  describe: string;
-  url: string;
-}
+// interface PostI {
+//   id?: string;
+//   title: string;
+//   describe: string;
+//   url: string;
+// }
 
 const Screenshots = () => {
-  const [title, setTitle] = useState("");
-  const [describe, setDescribe] = useState("");
-  const [url, setUrl] = useState("");
+  // const [title, setTitle] = useState("");
+  // const [describe, setDescribe] = useState("");
+  // const [url, setUrl] = useState("");
   const {
     isLoading,
     error,
@@ -36,19 +36,19 @@ const Screenshots = () => {
       .then((res) => res.data)
   );
 
-  const mutation = useMutation((newTodo: PostI) => {
-    return axios.post<Todo[]>(
-      "https://tibiadia-default-rtdb.europe-west1.firebasedatabase.app/screenshots.json",
-      newTodo
-    );
-  });
+  // const mutation = useMutation((newTodo: PostI) => {
+  //   return axios.post<Todo[]>(
+  //     "https://tibiadia-default-rtdb.europe-west1.firebasedatabase.app/screenshots.json",
+  //     newTodo
+  //   );
+  // });
 
-  const createPost = mutation.mutate({
-    // id: uuidv4(),
-    title: title,
-    describe: describe,
-    url: url,
-  });
+  // const createPost = mutation.mutate({
+  //   // id: uuidv4(),
+  //   title: title,
+  //   describe: describe,
+  //   url: url,
+  // });
 
   if (isLoading)
     return (
@@ -91,7 +91,7 @@ const Screenshots = () => {
             padding: "25px",
           }}
         >
-          <div>Somethink went wrong 😒</div>;
+          <div>Somethink went wrong 😒</div>
         </Box>
       </Box>
     );
@@ -133,6 +133,7 @@ const Screenshots = () => {
           },
         }}
       />
+
       {todos?.map((todo) => {
         return (
           <Box
@@ -186,19 +187,69 @@ const Screenshots = () => {
           </Box>
         );
       })}
-      <Box sx={{ position: "fixed", right: "25px", bottom: "25px" }}>
-        <NestedModal
-          createPost={() => createPost}
-          title={title}
-          describe={describe}
-          url={url}
-          setTitle={setTitle}
-          setDescribe={setDescribe}
-          setUrl={setUrl}
-        />
-      </Box>
     </Box>
   );
 };
 
 export default Screenshots;
+
+// {
+/* <Box
+sx={{
+  position: "fixed",
+  right: "25px",
+  bottom: "25px",
+  bgcolor: "grey",
+}}
+>
+<TextField
+  id="outlined-basic"
+  variant="outlined"
+  sx={{ mb: "10px" }}
+  onChange={(e) => setTitle(e.target.value)}
+  value={title}
+/>
+<TextField
+  id="outlined-basic"
+  variant="outlined"
+  sx={{ mb: "10px" }}
+  onChange={(e) => setDescribe(e.target.value)}
+  value={describe}
+/>
+<TextField
+  id="outlined-basic"
+  variant="outlined"
+  sx={{ mb: "10px" }}
+  onChange={(e) => setUrl(e.target.value)}
+  value={url}
+/>
+
+<Button
+  sx={{
+    backgroundColor: "#1976d2",
+    color: "#fff",
+    margin: "10px 0",
+    "&:hover": { backgroundColor: "#1168bf" },
+  }}
+  onClick={() =>
+    mutation.mutate({
+      // id: uuidv4(),
+      title: title,
+      describe: describe,
+      url: url,
+    })
+  }
+>
+  Add new post{" "}
+</Button>
+{/* <NestedModal
+  createPost={() => createPost}
+  title={title}
+  describe={describe}
+  url={url}
+  setTitle={setTitle}
+  setDescribe={setDescribe}
+  setUrl={setUrl}
+/> */
+
+// </Box>
