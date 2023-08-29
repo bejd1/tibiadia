@@ -64,7 +64,7 @@ const SharedCalculator = () => {
               paddingLeft: "5px",
               fontSize: "16px",
             }}
-            type="text"
+            type="number"
             value={counter}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setCounter(parseInt(e.target.value))

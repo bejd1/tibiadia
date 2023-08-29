@@ -128,7 +128,7 @@ export default function CollapsibleTable({
                 fontSize: "15px",
                 "@media (max-width: 400px)": {
                   padding: 0,
-                  width: "30px",
+                  width: "10px",
                   pr: "5px",
                   fontSize: "14px",
                 },
@@ -352,8 +352,8 @@ export default function CollapsibleTable({
                         width: "70px",
                         "@media (max-width: 400px)": {
                           padding: 0,
-                          paddingLeft: "5px",
-                          width: "40px",
+                          paddingLeft: "2px",
+                          width: "30px",
                         },
                       }}
                     >
@@ -444,6 +444,9 @@ export default function CollapsibleTable({
                               marginBottom: "20px",
                               color: "#fff",
                               display: "flex",
+                              "@media (max-width: 500px)": {
+                                flexDirection: "column",
+                              },
                             }}
                           >
                             <Box sx={{ margin: " 10px" }}>
@@ -453,7 +456,7 @@ export default function CollapsibleTable({
                                   fontWeight: "bold",
                                   display: "flex",
                                   flexDirection: "row",
-                                  justifyContent: "center",
+                                  // justifyContent: "center",
                                   alignItems: "center",
                                   marginRight: "10px",
                                   marginBottom: "2px",
@@ -492,6 +495,10 @@ export default function CollapsibleTable({
                                 flexDirection: "column",
                                 margin: "10px 0",
                                 marginLeft: "60px",
+                                "@media (max-width: 500px)": {
+                                  margin: "0px",
+                                  marginLeft: "10px",
+                                },
                               }}
                             >
                               {character.deaths &&
