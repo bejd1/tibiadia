@@ -78,7 +78,8 @@ export default function CollapsibleTable({
                 "@media (max-width: 400px)": {
                   padding: 0,
                   width: "40px",
-                  pl: "5px",
+                  pl: "25px",
+                  fontSize: "14px",
                 },
               }}
             >
@@ -94,6 +95,7 @@ export default function CollapsibleTable({
                 "@media (max-width: 400px)": {
                   padding: 0,
                   width: "40px",
+                  fontSize: "14px",
                 },
               }}
             >
@@ -109,6 +111,8 @@ export default function CollapsibleTable({
                 "@media (max-width: 400px)": {
                   padding: 0,
                   width: "40px",
+                  marginLeft: "8px",
+                  fontSize: "14px",
                 },
               }}
             >
@@ -126,6 +130,7 @@ export default function CollapsibleTable({
                   padding: 0,
                   width: "30px",
                   pr: "5px",
+                  fontSize: "14px",
                 },
               }}
             >
@@ -341,7 +346,16 @@ export default function CollapsibleTable({
                     <TableCell
                       component="th"
                       scope="row"
-                      sx={{ pl: 3, color: "#fff", width: "70px" }}
+                      sx={{
+                        pl: 3,
+                        color: "#fff",
+                        width: "70px",
+                        "@media (max-width: 400px)": {
+                          padding: 0,
+                          paddingLeft: "5px",
+                          width: "40px",
+                        },
+                      }}
                     >
                       <a
                         href={`https://www.tibia.com/community/?name=${character.character.name}`}
@@ -352,10 +366,11 @@ export default function CollapsibleTable({
                           alignItems: "center",
                         }}
                       >
-                        <img
+                        <Box
+                          component="img"
                           src={tibiaComIcon}
                           alt="Tibia Icon"
-                          style={{
+                          sx={{
                             marginRight: "3px",
                             width: "15px",
                             height: "15px",
@@ -371,17 +386,39 @@ export default function CollapsibleTable({
                         color: "#fff",
                         width: "70px",
                         paddingRight: "25px",
+                        "@media (max-width: 400px)": {
+                          padding: 0,
+                          width: "40px",
+                        },
                       }}
                     >
                       {character.character.level}
                     </TableCell>
                     <TableCell
                       align="right"
-                      sx={{ color: "#fff", width: "70px" }}
+                      sx={{
+                        color: "#fff",
+                        width: "70px",
+                        "@media (max-width: 400px)": {
+                          padding: 0,
+                          width: "40px",
+                          paddingLeft: "8px",
+                        },
+                      }}
                     >
                       {vocationDisplay}
                     </TableCell>
-                    <TableCell align="right" sx={{ pr: 5 }}>
+                    <TableCell
+                      align="right"
+                      sx={{
+                        pr: 5,
+                        width: "70px",
+                        "@media (max-width: 400px)": {
+                          padding: 0,
+                          width: "40px",
+                        },
+                      }}
+                    >
                       <IconButton
                         aria-label="expand row"
                         size="small"

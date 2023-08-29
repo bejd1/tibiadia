@@ -1,45 +1,100 @@
-import { useEffect, useState } from "react";
-import fullscreen from "./fullscreen.png";
 import { Box, Divider, Typography } from "@mui/material";
-// import { useQuery } from "@tanstack/react-query";
-// import glokuNaTarczy from "./glokunatarczy.png";
+import { useMutation, useQuery } from "react-query";
+import axios from "axios";
+import NestedModal from "../../components/modal";
+import { Loading } from "../../components/loading";
+import { useState } from "react";
+// import { v4 as uuidv4 } from "uuid";
+
+interface Todo {
+  author?: string;
+  describe: string;
+  img: string;
+  title: string;
+}
+
+interface PostI {
+  id?: string;
+  title: string;
+  describe: string;
+  url: string;
+}
 
 const Screenshots = () => {
-  const [photos, setPhotos] = useState();
+  const [title, setTitle] = useState("");
+  const [describe, setDescribe] = useState("");
+  const [url, setUrl] = useState("");
+  const {
+    isLoading,
+    error,
+    data: todos,
+  } = useQuery<Todo[]>("todos", () =>
+    axios
+      .get<Todo[]>(
+        "https://tibiadia-default-rtdb.europe-west1.firebasedatabase.app/screenshots.json"
+      )
+      .then((res) => res.data)
+  );
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          "https://tibiadia-default-rtdb.europe-west1.firebasedatabase.app/"
-        );
-        const data = await response.json();
-        setPhotos(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+  const mutation = useMutation((newTodo: PostI) => {
+    return axios.post<Todo[]>(
+      "https://tibiadia-default-rtdb.europe-west1.firebasedatabase.app/screenshots.json",
+      newTodo
+    );
+  });
 
-    fetchData();
-  }, []);
+  const createPost = mutation.mutate({
+    // id: uuidv4(),
+    title: title,
+    describe: describe,
+    url: url,
+  });
 
-  console.log(photos);
+  if (isLoading)
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <Box
+          sx={{
+            boxShadow: "0 3px 10px rgb(0 0 0 / 0.2)",
+            bgcolor: "#212121",
+            borderRadius: "10px",
+            padding: "25px",
+          }}
+        >
+          <Loading />
+        </Box>
+      </Box>
+    );
 
-  // const url: string =
-  //   "https://tibiadia-default-rtdb.europe-west1.firebasedatabase.app/";
-
-  // const { data } = useQuery({
-  //   queryKey: ["repoData"],
-  //   queryFn: () =>
-  //     fetch(
-  //       "https://tibiadia-default-rtdb.europe-west1.firebasedatabase.app/"
-  //     ).then((res) => res.data),
-  // });
-
-  // if (isLoading) return "Loading...";
-
-  // if (error) return "An error has occurred: " + error;
-  // console.log(data);
+  if (error)
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <Box
+          sx={{
+            boxShadow: "0 3px 10px rgb(0 0 0 / 0.2)",
+            bgcolor: "#212121",
+            borderRadius: "10px",
+            padding: "25px",
+          }}
+        >
+          <div>Somethink went wrong 😒</div>;
+        </Box>
+      </Box>
+    );
 
   return (
     <Box
@@ -78,47 +133,68 @@ const Screenshots = () => {
           },
         }}
       />
-      <Box
-        sx={{
-          marginTop: "10px",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Typography
-          variant="h4"
-          sx={{ fontSize: "20px", marginBottom: "10px" }}
-        >
-          Gloku na tarczy
-        </Typography>
-        <Typography
-          sx={{
-            marginBottom: "10px",
-            padding: "0 10px",
-            fontSize: "14px",
-            "@media (max-width: 600px)": {
-              fontSize: "12px",
-            },
-          }}
-        >
-          Aug 23 2023, 14:13:03 CEST Died at Level 149 by gazer spectre.
-        </Typography>
-        <Box
-          component="img"
-          src={fullscreen}
-          alt="Tibia Icon"
-          sx={{
-            maxWidth: "1300px",
-            marginBottom: "40px",
-            "@media (max-width: 1350px)": {
-              width: "90%",
-            },
-            "@media (max-width: 600px)": {
-              width: "100%",
-            },
-          }}
+      {todos?.map((todo) => {
+        return (
+          <Box
+            sx={{
+              marginTop: "10px",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Typography
+              variant="h4"
+              sx={{ fontSize: "20px", marginBottom: "10px" }}
+            >
+              {todo.title}
+            </Typography>
+            <Typography
+              sx={{
+                marginBottom: "10px",
+                padding: "0 10px",
+                fontSize: "18px",
+                "@media (max-width: 600px)": {
+                  fontSize: "12px",
+                },
+              }}
+            >
+              {todo.describe}
+            </Typography>
+            {/* <Typography
+              variant="h4"
+              sx={{ fontSize: "11px", marginBottom: "10px" }}
+            >
+              {todo.author}
+            </Typography> */}
+            <Box
+              component="img"
+              src={todo.img}
+              alt="Tibia Icon"
+              sx={{
+                maxWidth: "1300px",
+                marginBottom: "40px",
+                "@media (max-width: 1350px)": {
+                  width: "90%",
+                },
+                "@media (max-width: 600px)": {
+                  width: "100%",
+                },
+              }}
+            />
+          </Box>
+        );
+      })}
+      <Box sx={{ position: "fixed", right: "25px", bottom: "25px" }}>
+        <NestedModal
+          createPost={() => createPost}
+          title={title}
+          describe={describe}
+          url={url}
+          setTitle={setTitle}
+          setDescribe={setDescribe}
+          setUrl={setUrl}
         />
       </Box>
     </Box>
