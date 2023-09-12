@@ -1,9 +1,9 @@
-"use client";
-
+import { useQuery } from "react-query";
 import { Loading } from "../../components/loading";
 import CollapsibleTable from "../../components/table";
 import { Box, Divider, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 type CharsT = {
   deaths?: DeathsT[] | null;
@@ -23,51 +23,51 @@ type DeathsT = {
   level: number;
 };
 
+type NamesT = {
+  name: string;
+};
+
 const Characters: React.FC = () => {
   const [characters, setCharacters] = useState<CharsT[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  const { data: nickNames } = useQuery<NamesT[]>("screens", async () => {
+    const response = await axios.get<NamesT[]>(
+      "https://tibiadia-default-rtdb.europe-west1.firebasedatabase.app/chars.json"
+    );
+    return response.data;
+  });
+
   useEffect(() => {
-    const names = [
-      "Lezi",
-      "Lucky Miken",
-      "pan voldes",
-      "karmazzin",
-      "cuprra",
-      "arek od samarek",
-      "lucznik zohan",
-      "dia soraka",
-      "ivanienko dobry druid",
-      "Diewuj",
-      "Elon Skyllir",
-    ];
-
-    const fetchCharacters = async () => {
+    const fetchCharactersWithDelay = async () => {
       try {
-        const characterPromises = names.map(async (name) => {
-          try {
-            const response = await fetch(
-              `https://api.tibiadata.com/v3/character/${name}`
-            );
-            const data = await response.json();
-            setIsLoading(false);
+        if (nickNames) {
+          setTimeout(async () => {
+            const characterPromises = nickNames.map(async (name) => {
+              try {
+                const response = await fetch(
+                  `https://api.tibiadata.com/v3/character/${name.name}`
+                );
+                const data = await response.json();
+                setIsLoading(false);
+                return data.characters;
+              } catch (error) {
+                console.error(`Error fetching character ${name}:`, error);
+                return null;
+              }
+            });
 
-            return data.characters;
-          } catch (error) {
-            console.error(`Error fetching character ${name}:`, error);
-            return null;
-          }
-        });
-
-        const charactersData = await Promise.all(characterPromises);
-        setCharacters(charactersData.filter((data) => data !== null));
+            const charactersData = await Promise.all(characterPromises);
+            setCharacters(charactersData.filter((data) => data !== null));
+          }, 1000);
+        }
       } catch (error) {
         console.error("Error fetching characters:", error);
       }
     };
 
-    fetchCharacters();
-  }, []);
+    fetchCharactersWithDelay();
+  }, [nickNames]);
 
   return (
     <Box
@@ -102,6 +102,7 @@ const Characters: React.FC = () => {
           },
         }}
       />
+      <Box></Box>
       <CollapsibleTable characters={characters} />
       {isLoading && (
         <Box

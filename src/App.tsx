@@ -6,11 +6,12 @@ import SharedCalculator from "./pages/sharedCalculator/sharedCalculator";
 import Screenshots from "./pages/screenshots/screenshots";
 import Characters from "./pages/chars/chars";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { Box, Typography } from "@mui/material";
 
 function App() {
   const queryClient = new QueryClient();
   return (
-    <div className="App">
+    <Box className="App">
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <Nav />
@@ -23,18 +24,18 @@ function App() {
             <Route
               path="*"
               element={
-                <div className="page-not-exist">
-                  <h2>This page does not exist</h2>
+                <Box className="page-not-exist">
+                  <Typography variant="h2">This page does not exist</Typography>
                   <Link to="/tibiadia">
                     <button className="page-not-exits-btn">back to home</button>
                   </Link>
-                </div>
+                </Box>
               }
             />
           </Routes>
         </BrowserRouter>
       </QueryClientProvider>
-    </div>
+    </Box>
   );
 }
 

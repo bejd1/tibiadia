@@ -16,7 +16,7 @@ import ShieldIcon from "@mui/icons-material/Shield";
 import { GiPotionBall } from "@react-icons/all-files/gi/GiPotionBall";
 import { GiBurningSkull } from "@react-icons/all-files/gi/GiBurningSkull";
 import { BiStats } from "@react-icons/all-files/bi/BiStats";
-import { Divider } from "@mui/material";
+import { Divider, Typography } from "@mui/material";
 import tibiaComIcon from "../images/tibiaIcon.png";
 
 type CharsT = {
@@ -177,12 +177,13 @@ export default function CollapsibleTable({
                   character.character.vocation === "Knight"
                 ) {
                   return (
-                    <div>
-                      <p
+                    <Box>
+                      <Typography
                         style={{
                           display: "flex",
                           flexDirection: "row",
                           alignItems: "center",
+                          fontSize: "15px",
                         }}
                       >
                         <FavoriteIcon
@@ -194,8 +195,15 @@ export default function CollapsibleTable({
                           }}
                         />
                         {maxHpEk}
-                      </p>
-                      <p style={{ display: "flex", flexDirection: "row" }}>
+                      </Typography>
+                      <Typography
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                          fontSize: "15px",
+                        }}
+                      >
                         <GiPotionBall
                           style={{
                             fontSize: "16px",
@@ -205,20 +213,21 @@ export default function CollapsibleTable({
                           }}
                         />
                         {maxManaEk}
-                      </p>
-                    </div>
+                      </Typography>
+                    </Box>
                   );
                 } else if (
                   character.character.vocation === "Master Sorcerer" ||
                   character.character.vocation === "Sorcerer"
                 ) {
                   return (
-                    <div>
-                      <p
+                    <Box>
+                      <Typography
                         style={{
                           display: "flex",
                           flexDirection: "row",
                           alignItems: "center",
+                          fontSize: "15px",
                         }}
                       >
                         <FavoriteIcon
@@ -230,12 +239,13 @@ export default function CollapsibleTable({
                           }}
                         />
                         {maxHpSorcerer}
-                      </p>
-                      <p
+                      </Typography>
+                      <Typography
                         style={{
                           display: "flex",
                           flexDirection: "row",
                           alignItems: "center",
+                          fontSize: "15px",
                         }}
                       >
                         <GiPotionBall
@@ -247,20 +257,21 @@ export default function CollapsibleTable({
                           }}
                         />
                         {maxManaSorcerer}
-                      </p>
-                    </div>
+                      </Typography>
+                    </Box>
                   );
                 } else if (
                   character.character.vocation === "Royal Paladin" ||
                   character.character.vocation === "Paladin"
                 ) {
                   return (
-                    <div>
-                      <p
+                    <Box>
+                      <Typography
                         style={{
                           display: "flex",
                           flexDirection: "row",
                           alignItems: "center",
+                          fontSize: "15px",
                         }}
                       >
                         <FavoriteIcon
@@ -275,12 +286,13 @@ export default function CollapsibleTable({
                           }}
                         />
                         {maxHpRp}
-                      </p>
-                      <p
+                      </Typography>
+                      <Typography
                         style={{
                           display: "flex",
                           flexDirection: "row",
                           alignItems: "center",
+                          fontSize: "15px",
                         }}
                       >
                         <GiPotionBall
@@ -292,20 +304,21 @@ export default function CollapsibleTable({
                           }}
                         />
                         {maxManaRp}
-                      </p>
-                    </div>
+                      </Typography>
+                    </Box>
                   );
                 } else if (
                   character.character.vocation === "Elder Druid" ||
                   character.character.vocation === "Druid"
                 ) {
                   return (
-                    <div>
-                      <p
+                    <Box>
+                      <Typography
                         style={{
                           display: "flex",
                           flexDirection: "row",
                           alignItems: "center",
+                          fontSize: "15px",
                         }}
                       >
                         <FavoriteIcon
@@ -317,12 +330,13 @@ export default function CollapsibleTable({
                           }}
                         />
                         {maxHpDruid}
-                      </p>
-                      <p
+                      </Typography>
+                      <Typography
                         style={{
                           display: "flex",
                           flexDirection: "row",
                           alignItems: "center",
+                          fontSize: "15px",
                         }}
                       >
                         <GiPotionBall
@@ -334,8 +348,8 @@ export default function CollapsibleTable({
                           }}
                         />
                         {maxManaDruid}
-                      </p>
-                    </div>
+                      </Typography>
+                    </Box>
                   );
                 } else return null;
               };
@@ -450,7 +464,8 @@ export default function CollapsibleTable({
                             }}
                           >
                             <Box sx={{ margin: " 10px" }}>
-                              <h4
+                              <Typography
+                                variant="h4"
                                 style={{
                                   fontSize: "15px",
                                   fontWeight: "bold",
@@ -460,6 +475,7 @@ export default function CollapsibleTable({
                                   alignItems: "center",
                                   marginRight: "10px",
                                   marginBottom: "2px",
+                                  marginTop: "10px",
                                 }}
                               >
                                 <BiStats
@@ -469,13 +485,14 @@ export default function CollapsibleTable({
                                   }}
                                 />
                                 Stats:
-                              </h4>
-                              <p>{professionManaHp()}</p>
-                              <p
+                              </Typography>
+                              <Typography>{professionManaHp()}</Typography>
+                              <Typography
                                 style={{
                                   display: "flex",
                                   flexDirection: "row",
                                   alignItems: "center",
+                                  fontSize: "15px",
                                 }}
                               >
                                 <ShieldIcon
@@ -487,7 +504,7 @@ export default function CollapsibleTable({
                                   }}
                                 />
                                 {minLevel}-{maxLevel}
-                              </p>
+                              </Typography>
                             </Box>
                             <Box
                               sx={{
@@ -501,41 +518,45 @@ export default function CollapsibleTable({
                                 },
                               }}
                             >
+                              <Typography
+                                variant="h4"
+                                style={{
+                                  fontSize: "15px",
+                                  display: "flex",
+                                  flexDirection: "row",
+                                  fontWeight: "bold",
+                                  marginBottom: "2px",
+                                  marginTop: "10px",
+                                }}
+                              >
+                                <GiBurningSkull
+                                  style={{
+                                    fontSize: "16px",
+                                    marginBottom: "2px",
+                                    marginRight: "3px",
+                                  }}
+                                />
+                                Death:
+                              </Typography>
+
                               {character.deaths &&
                               character.deaths.length > 0 ? (
-                                <h4
-                                  style={{
-                                    fontSize: "15px",
-                                    display: "flex",
-                                    flexDirection: "row",
-                                    fontWeight: "bold",
-                                    marginBottom: "2px",
-                                  }}
-                                >
-                                  <GiBurningSkull
-                                    style={{
-                                      fontSize: "16px",
-                                      marginBottom: "2px",
-                                      marginRight: "3px",
-                                    }}
-                                  />
-                                  Death:
-                                </h4>
-                              ) : (
-                                ""
-                              )}
+                                character.deaths.map((dead, index) => {
+                                  const deadTime = dead.time;
+                                  const newDeadTime = deadTime
+                                    .replace("T", " ")
+                                    .replace("Z", "");
 
-                              {character.deaths?.map((dead, index) => {
-                                const deadTime = dead.time;
-                                const newDeadTime = deadTime
-                                  .replace("T", " ")
-                                  .replace("Z", "");
-                                return (
-                                  <div key={index}>
-                                    <p>Killed by: {dead?.reason}</p>
-                                    <p>Data: {newDeadTime}</p>
-                                    {character.deaths &&
-                                      index !== character.deaths.length - 1 && (
+                                  return (
+                                    <Box key={index}>
+                                      <Typography sx={{ fontSize: "15px" }}>
+                                        Killed by: {dead?.reason}
+                                      </Typography>
+                                      <Typography sx={{ fontSize: "15px" }}>
+                                        Date: {newDeadTime}
+                                      </Typography>
+                                      {index !==
+                                        (character.deaths?.length ?? 0) - 1 && (
                                         <Divider
                                           sx={{
                                             width: "100%",
@@ -544,9 +565,21 @@ export default function CollapsibleTable({
                                           }}
                                         />
                                       )}
-                                  </div>
-                                );
-                              })}
+                                    </Box>
+                                  );
+                                })
+                              ) : (
+                                <Typography
+                                  style={{
+                                    fontSize: "15px",
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    marginBottom: "2px",
+                                  }}
+                                >
+                                  No death in the last month, great job! 😎
+                                </Typography>
+                              )}
                             </Box>
                           </Box>
                         </Collapse>

@@ -1,13 +1,13 @@
 import { Box, Typography } from "@mui/material";
-import cyclops from "../gifs/cyclops.gif";
-import demon from "../gifs/demon.gif";
-import dragon_lord from "../gifs/dragon_lord.gif";
-import ferumbras from "../gifs/ferumbras.gif";
-import ghazbaran from "../gifs/ghazbaran.gif";
-import giant_spider from "../gifs/giant_spider.gif";
-import rat from "../gifs/rat.gif";
-import rotworm from "../gifs/rotworm.gif";
-import snake from "../gifs/snake.gif";
+import cyclops from "../images/gifs/cyclops.gif";
+import demon from "../images/gifs/demon.gif";
+import dragon_lord from "../images/gifs/dragon_lord.gif";
+import ferumbras from "../images/gifs/ferumbras.gif";
+import ghazbaran from "../images/gifs/ghazbaran.gif";
+import giant_spider from "../images/gifs/giant_spider.gif";
+import rat from "../images/gifs/rat.gif";
+import rotworm from "../images/gifs/rotworm.gif";
+import snake from "../images/gifs/snake.gif";
 
 export const Loading = () => {
   const gifImages = [

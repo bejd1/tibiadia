@@ -1,9 +1,10 @@
 import { Box, Divider, Typography } from "@mui/material";
-import { useQuery } from "react-query";
+// import { Box, Button, Divider, TextField, Typography } from "@mui/material";
+import { useMutation, useQuery } from "react-query";
 import axios from "axios";
 import { Loading } from "../../components/loading";
-// import NestedModal from "../../components/modal";
 // import { useState } from "react";
+// import NestedModal from "../../components/modal";
 // import { v4 as uuidv4 } from "uuid";
 
 interface Todo {
@@ -11,24 +12,29 @@ interface Todo {
   describe: string;
   img: string;
   title: string;
+  date: string;
 }
 
-// interface PostI {
-//   id?: string;
-//   title: string;
-//   describe: string;
-//   url: string;
-// }
+interface PostI {
+  id?: string;
+  title: string;
+  describe: string;
+  url: string;
+  date: string;
+}
 
 const Screenshots = () => {
   // const [title, setTitle] = useState("");
   // const [describe, setDescribe] = useState("");
   // const [url, setUrl] = useState("");
+  // const dateObject = new Date();
+  // const date = dateObject.toLocaleString("en-US", { timeZone: "CET" });
+
   const {
     isLoading,
     error,
-    data: todos,
-  } = useQuery<Todo[]>("todos", () =>
+    data: screenshots,
+  } = useQuery<Todo[]>("screens", () =>
     axios
       .get<Todo[]>(
         "https://tibiadia-default-rtdb.europe-west1.firebasedatabase.app/screenshots.json"
@@ -36,18 +42,27 @@ const Screenshots = () => {
       .then((res) => res.data)
   );
 
-  // const mutation = useMutation((newTodo: PostI) => {
-  //   return axios.post<Todo[]>(
-  //     "https://tibiadia-default-rtdb.europe-west1.firebasedatabase.app/screenshots.json",
-  //     newTodo
-  //   );
-  // });
+  const mutation = useMutation((newTodo: PostI) => {
+    return axios.post<Todo[]>(
+      "https://tibiadia-default-rtdb.europe-west1.firebasedatabase.app/screenshots.json",
+      newTodo
+    );
+  });
+
+  // const mutation = useMutation({
+  //   mutationFn: (newTodo) => {
+  //     return axios.post<Todo[]>('/todos', newTodo)
+  //   },
+  // })
+
+  // console.log(screenshots);
 
   // const createPost = mutation.mutate({
   //   // id: uuidv4(),
   //   title: title,
   //   describe: describe,
   //   url: url,
+  //   date: date,
   // });
 
   if (isLoading)
@@ -91,10 +106,12 @@ const Screenshots = () => {
             padding: "25px",
           }}
         >
-          <div>Somethink went wrong 😒</div>
+          <Typography>Somethink went wrong 😒</Typography>
         </Box>
       </Box>
     );
+
+  console.log(mutation);
 
   return (
     <Box
@@ -134,122 +151,142 @@ const Screenshots = () => {
         }}
       />
 
-      {todos?.map((todo) => {
-        return (
-          <Box
-            sx={{
-              marginTop: "10px",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Typography
-              variant="h4"
-              sx={{ fontSize: "20px", marginBottom: "10px" }}
-            >
-              {todo.title}
-            </Typography>
-            <Typography
+      {screenshots
+        ?.sort((a, b) => Date.parse(b.date) - Date.parse(a.date))
+        ?.map((screenshot, index) => {
+          return (
+            <Box
+              key={index}
               sx={{
-                marginBottom: "10px",
-                padding: "0 10px",
-                fontSize: "18px",
-                "@media (max-width: 600px)": {
-                  fontSize: "12px",
-                },
+                marginTop: "10px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
               }}
             >
-              {todo.describe}
-            </Typography>
-            {/* <Typography
+              <Typography
+                variant="h4"
+                sx={{
+                  fontSize: "20px",
+                  marginBottom: "10px",
+                  "@media (max-width: 600px)": {
+                    fontSize: "14px",
+                  },
+                }}
+              >
+                {screenshot.title}
+              </Typography>
+              <Typography
+                sx={{
+                  marginBottom: "10px",
+                  padding: "0 10px",
+                  fontSize: "18px",
+                  "@media (max-width: 600px)": {
+                    fontSize: "12px",
+                  },
+                }}
+              >
+                {screenshot.describe}
+              </Typography>
+              {/* <Typography
               variant="h4"
               sx={{ fontSize: "11px", marginBottom: "10px" }}
             >
               {todo.author}
             </Typography> */}
-            <Box
-              component="img"
-              src={todo.img}
-              alt="Tibia Icon"
-              sx={{
-                maxWidth: "1300px",
-                marginBottom: "40px",
-                "@media (max-width: 1350px)": {
-                  width: "90%",
-                },
-                "@media (max-width: 600px)": {
-                  width: "100%",
-                },
-              }}
-            />
-          </Box>
-        );
-      })}
+              <Box
+                component="img"
+                src={screenshot.img}
+                alt="Tibia Icon"
+                sx={{
+                  maxWidth: "1300px",
+                  marginBottom: "40px",
+                  "@media (max-width: 1350px)": {
+                    width: "90%",
+                  },
+                  "@media (max-width: 600px)": {
+                    width: "100%",
+                  },
+                }}
+              />
+              {screenshots.length && index !== screenshots.length - 1 && (
+                <Divider
+                  sx={{
+                    width: "100%",
+                    bgcolor: "white",
+                    margin: "20px 0",
+                  }}
+                />
+              )}
+              {/* <Box
+                sx={{
+                  position: "fixed",
+                  right: "25px",
+                  bottom: "25px",
+                  bgcolor: "grey",
+                }}
+              >
+                <TextField
+                  placeholder="TITLE"
+                  id="outlined-basic"
+                  variant="outlined"
+                  sx={{ mb: "10px" }}
+                  onChange={(e) => setTitle(e.target.value)}
+                  value={title}
+                />
+                <TextField
+                  placeholder="DESCRIPBE"
+                  id="outlined-basic"
+                  variant="outlined"
+                  sx={{ mb: "10px" }}
+                  onChange={(e) => setDescribe(e.target.value)}
+                  value={describe}
+                />
+                <TextField
+                  placeholder="URL"
+                  id="outlined-basic"
+                  variant="outlined"
+                  sx={{ mb: "10px" }}
+                  onChange={(e) => setUrl(e.target.value)}
+                  value={url}
+                />
+
+                <Button
+                  sx={{
+                    backgroundColor: "#1976d2",
+                    color: "#fff",
+                    margin: "10px 0",
+                    "&:hover": { backgroundColor: "#1168bf" },
+                  }}
+                  onClick={() =>
+                    mutation.mutate({
+                      // id: uuidv4(),
+                      title: title,
+                      describe: describe,
+                      url: url,
+                      date: date,
+                    })
+                  }
+                >
+                  Add new post{" "}
+                </Button> */}
+
+              {/* <NestedModal
+                createPost={() => createPost}
+                title={title}
+                describe={describe}
+                url={url}
+                setTitle={setTitle}
+                setDescribe={setDescribe}
+                setUrl={setUrl}
+              /> */}
+              {/* </Box> */}
+            </Box>
+          );
+        })}
     </Box>
   );
 };
 
 export default Screenshots;
-
-// {
-/* <Box
-sx={{
-  position: "fixed",
-  right: "25px",
-  bottom: "25px",
-  bgcolor: "grey",
-}}
->
-<TextField
-  id="outlined-basic"
-  variant="outlined"
-  sx={{ mb: "10px" }}
-  onChange={(e) => setTitle(e.target.value)}
-  value={title}
-/>
-<TextField
-  id="outlined-basic"
-  variant="outlined"
-  sx={{ mb: "10px" }}
-  onChange={(e) => setDescribe(e.target.value)}
-  value={describe}
-/>
-<TextField
-  id="outlined-basic"
-  variant="outlined"
-  sx={{ mb: "10px" }}
-  onChange={(e) => setUrl(e.target.value)}
-  value={url}
-/>
-
-<Button
-  sx={{
-    backgroundColor: "#1976d2",
-    color: "#fff",
-    margin: "10px 0",
-    "&:hover": { backgroundColor: "#1168bf" },
-  }}
-  onClick={() =>
-    mutation.mutate({
-      // id: uuidv4(),
-      title: title,
-      describe: describe,
-      url: url,
-    })
-  }
->
-  Add new post{" "}
-</Button>
-{/* <NestedModal
-  createPost={() => createPost}
-  title={title}
-  describe={describe}
-  url={url}
-  setTitle={setTitle}
-  setDescribe={setDescribe}
-  setUrl={setUrl}
-/> */
-
-// </Box>
