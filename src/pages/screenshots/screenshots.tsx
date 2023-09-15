@@ -1,34 +1,52 @@
-import { Box, Divider, Typography } from "@mui/material";
-// import { Box, Button, Divider, TextField, Typography } from "@mui/material";
-import { useMutation, useQuery } from "react-query";
+import { Box, Button, Divider, TextField, Typography } from "@mui/material";
+import { useQuery } from "react-query";
 import axios from "axios";
 import { Loading } from "../../components/loading";
-// import { useState } from "react";
-// import NestedModal from "../../components/modal";
-// import { v4 as uuidv4 } from "uuid";
+import { useState } from "react";
+import { v4 } from "uuid";
 
 interface Todo {
   author?: string;
-  describe: string;
-  img: string;
-  title: string;
-  date: string;
-}
-
-interface PostI {
-  id?: string;
-  title: string;
-  describe: string;
-  url: string;
-  date: string;
+  describe?: string;
+  img?: string;
+  title?: string;
+  date?: string;
+  id?: string | undefined;
 }
 
 const Screenshots = () => {
-  // const [title, setTitle] = useState("");
-  // const [describe, setDescribe] = useState("");
-  // const [url, setUrl] = useState("");
-  // const dateObject = new Date();
-  // const date = dateObject.toLocaleString("en-US", { timeZone: "CET" });
+  const [title, setTitle] = useState("");
+  const [describe, setDescribe] = useState("");
+  const [url, setUrl] = useState("");
+
+  const dateObject = new Date();
+  const date = dateObject.toLocaleString("en-US", { timeZone: "CET" });
+
+  const addNewPost = () => {
+    const postId = v4();
+    const newPost = {
+      id: postId,
+      title: title,
+      describe: describe,
+      url: url,
+      date: date,
+    };
+    axios
+      .post(
+        `https://tibiadia-default-rtdb.europe-west1.firebasedatabase.app/screenshots.json`,
+        newPost
+      )
+      .then((response) => {
+        console.log("New post added:", response.data);
+        setTitle("");
+        setDescribe("");
+        setUrl("");
+      })
+      .catch((error) => {
+        // Handle errors
+        console.error("Error adding new post:", error);
+      });
+  };
 
   const {
     isLoading,
@@ -36,34 +54,26 @@ const Screenshots = () => {
     data: screenshots,
   } = useQuery<Todo[]>("screens", () =>
     axios
-      .get<Todo[]>(
+      .get<Record<string, Todo>>(
         "https://tibiadia-default-rtdb.europe-west1.firebasedatabase.app/screenshots.json"
       )
-      .then((res) => res.data)
+      .then((res) => {
+        const data = res.data;
+
+        // Ensure data is an object
+        if (typeof data !== "object" || data === null) {
+          throw new Error("Data is not an object");
+        }
+
+        // Convert the object into an array with IDs as keys
+        const screenshotsArray = Object.keys(data).map((key) => ({
+          id: key,
+          ...data[key],
+        }));
+
+        return screenshotsArray;
+      })
   );
-
-  const mutation = useMutation((newTodo: PostI) => {
-    return axios.post<Todo[]>(
-      "https://tibiadia-default-rtdb.europe-west1.firebasedatabase.app/screenshots.json",
-      newTodo
-    );
-  });
-
-  // const mutation = useMutation({
-  //   mutationFn: (newTodo) => {
-  //     return axios.post<Todo[]>('/todos', newTodo)
-  //   },
-  // })
-
-  // console.log(screenshots);
-
-  // const createPost = mutation.mutate({
-  //   // id: uuidv4(),
-  //   title: title,
-  //   describe: describe,
-  //   url: url,
-  //   date: date,
-  // });
 
   if (isLoading)
     return (
@@ -111,8 +121,6 @@ const Screenshots = () => {
       </Box>
     );
 
-  console.log(mutation);
-
   return (
     <Box
       sx={{
@@ -151,140 +159,118 @@ const Screenshots = () => {
         }}
       />
 
-      {screenshots
-        ?.sort((a, b) => Date.parse(b.date) - Date.parse(a.date))
-        ?.map((screenshot, index) => {
-          return (
-            <Box
-              key={index}
-              sx={{
-                marginTop: "10px",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Typography
-                variant="h4"
-                sx={{
-                  fontSize: "20px",
-                  marginBottom: "10px",
-                  "@media (max-width: 600px)": {
-                    fontSize: "14px",
-                  },
-                }}
-              >
-                {screenshot.title}
-              </Typography>
-              <Typography
-                sx={{
-                  marginBottom: "10px",
-                  padding: "0 10px",
-                  fontSize: "18px",
-                  "@media (max-width: 600px)": {
-                    fontSize: "12px",
-                  },
-                }}
-              >
-                {screenshot.describe}
-              </Typography>
-              {/* <Typography
-              variant="h4"
-              sx={{ fontSize: "11px", marginBottom: "10px" }}
-            >
-              {todo.author}
-            </Typography> */}
+      {screenshots?.length === 0 ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <p style={{ color: "white" }}>No screenshots</p>
+        </div>
+      ) : (
+        screenshots
+          // ?.sort((a, b) => Date.parse(b.date) - Date.parse(a.date))
+          ?.map((screenshot, index) => {
+            return (
               <Box
-                component="img"
-                src={screenshot.img}
-                alt="Tibia Icon"
+                key={screenshot.id}
                 sx={{
-                  maxWidth: "1300px",
-                  marginBottom: "40px",
-                  "@media (max-width: 1350px)": {
-                    width: "90%",
-                  },
-                  "@media (max-width: 600px)": {
-                    width: "100%",
-                  },
-                }}
-              />
-              {screenshots.length && index !== screenshots.length - 1 && (
-                <Divider
-                  sx={{
-                    width: "100%",
-                    bgcolor: "white",
-                    margin: "20px 0",
-                  }}
-                />
-              )}
-              {/* <Box
-                sx={{
-                  position: "fixed",
-                  right: "25px",
-                  bottom: "25px",
-                  bgcolor: "grey",
+                  marginTop: "10px",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
               >
-                <TextField
-                  placeholder="TITLE"
-                  id="outlined-basic"
-                  variant="outlined"
-                  sx={{ mb: "10px" }}
-                  onChange={(e) => setTitle(e.target.value)}
-                  value={title}
-                />
-                <TextField
-                  placeholder="DESCRIPBE"
-                  id="outlined-basic"
-                  variant="outlined"
-                  sx={{ mb: "10px" }}
-                  onChange={(e) => setDescribe(e.target.value)}
-                  value={describe}
-                />
-                <TextField
-                  placeholder="URL"
-                  id="outlined-basic"
-                  variant="outlined"
-                  sx={{ mb: "10px" }}
-                  onChange={(e) => setUrl(e.target.value)}
-                  value={url}
-                />
-
-                <Button
+                <Typography
+                  variant="h4"
                   sx={{
-                    backgroundColor: "#1976d2",
-                    color: "#fff",
-                    margin: "10px 0",
-                    "&:hover": { backgroundColor: "#1168bf" },
+                    fontSize: "20px",
+                    marginBottom: "10px",
+                    "@media (max-width: 600px)": {
+                      fontSize: "14px",
+                    },
                   }}
-                  onClick={() =>
-                    mutation.mutate({
-                      // id: uuidv4(),
-                      title: title,
-                      describe: describe,
-                      url: url,
-                      date: date,
-                    })
-                  }
                 >
-                  Add new post{" "}
-                </Button> */}
+                  {screenshot.title}
+                </Typography>
+                <Typography
+                  sx={{
+                    marginBottom: "10px",
+                    padding: "0 10px",
+                    fontSize: "18px",
+                    "@media (max-width: 600px)": {
+                      fontSize: "12px",
+                    },
+                  }}
+                >
+                  {screenshot.describe}
+                </Typography>
+                <Box
+                  component="img"
+                  src={screenshot.img}
+                  alt="Tibia Icon"
+                  sx={{
+                    maxWidth: "1300px",
+                    marginBottom: "40px",
+                    "@media (max-width: 1350px)": {
+                      width: "90%",
+                    },
+                    "@media (max-width: 600px)": {
+                      width: "100%",
+                    },
+                  }}
+                />
+                {screenshots.length && index !== screenshots.length - 1 && (
+                  <Divider
+                    sx={{
+                      width: "100%",
+                      bgcolor: "white",
+                      margin: "20px 0",
+                    }}
+                  />
+                )}
+              </Box>
+            );
+          })
+      )}
+      <Box
+        sx={{
+          position: "fixed",
+          right: "25px",
+          bottom: "25px",
+          bgcolor: "grey",
+        }}
+      >
+        <TextField
+          placeholder="TITLE"
+          id="outlined-basic"
+          variant="outlined"
+          sx={{ mb: "10px" }}
+          onChange={(e) => setTitle(e.target.value)}
+          value={title}
+        />
+        <TextField
+          placeholder="DESCRIPE"
+          id="outlined-basic"
+          variant="outlined"
+          sx={{ mb: "10px" }}
+          onChange={(e) => setDescribe(e.target.value)}
+          value={describe}
+        />
+        <TextField
+          placeholder="URL"
+          id="outlined-basic"
+          variant="outlined"
+          sx={{ mb: "10px" }}
+          onChange={(e) => setUrl(e.target.value)}
+          value={url}
+        />
 
-              {/* <NestedModal
-                createPost={() => createPost}
-                title={title}
-                describe={describe}
-                url={url}
-                setTitle={setTitle}
-                setDescribe={setDescribe}
-                setUrl={setUrl}
-              /> */}
-              {/* </Box> */}
-            </Box>
-          );
-        })}
+        <Button onClick={addNewPost}>Add new note</Button>
+      </Box>
     </Box>
   );
 };
