@@ -3,7 +3,10 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import { Button, Fab, TextField, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import CloseIcon from "@mui/icons-material/Close";
 import { Dispatch, SetStateAction } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+import ErrorIcon from "@mui/icons-material/Error";
 
 const style = {
   position: "absolute" as "absolute",
@@ -18,32 +21,60 @@ const style = {
   pb: 3,
 };
 
-interface MutatnioI {
-  createPost: () => void;
+interface NewPostI {
+  addNewPost: () => void;
   title: string;
-  describe: string;
+  description: string;
   url: string;
+  author: string;
   setTitle: Dispatch<SetStateAction<string>>;
-  setDescribe: Dispatch<SetStateAction<string>>;
+  setDescription: Dispatch<SetStateAction<string>>;
   setUrl: Dispatch<SetStateAction<string>>;
+  setAuthor: Dispatch<SetStateAction<string>>;
 }
 
 export default function NestedModal({
-  createPost,
+  addNewPost,
   title,
-  describe,
+  description,
   url,
+  author,
   setTitle,
-  setDescribe,
+  setDescription,
   setUrl,
-}: MutatnioI) {
+  setAuthor,
+}: NewPostI) {
   const [open, setOpen] = React.useState(false);
+  const [isAdding, setIsAdding] = React.useState(false);
 
   const handleOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<NewPostI>();
+
+  const onSubmit: SubmitHandler<NewPostI> = async (data) => {
+    if (!errors.author && !errors.title && !errors.description && !errors.url) {
+      setIsAdding(true);
+      try {
+        await addNewPost();
+        setIsAdding(true);
+      } catch (error) {
+        setIsAdding(true);
+        console.error("Error while adding a new post:", error);
+      }
+      setTimeout(() => {
+        setIsAdding(false);
+        handleClose();
+      }, 2500);
+    }
   };
 
   return (
@@ -62,56 +93,114 @@ export default function NestedModal({
         aria-labelledby="parent-modal-title"
         aria-describedby="parent-modal-description"
       >
-        <Box sx={{ ...style, width: 400 }}>
+        <Box sx={{ ...style, width: 500 }}>
+          <Box
+            onClick={handleClose}
+            sx={{
+              position: "absolute",
+              right: "30px",
+              top: "20px",
+              cursor: "pointer",
+            }}
+          >
+            <CloseIcon sx={{ fontSize: "30px" }} />
+          </Box>
           <Typography
             variant="h6"
             id="parent-modal-title"
-            sx={{ margin: "10px 0" }}
+            sx={{ margin: "15px 0", mb: "25px", fontSize: "22px" }}
           >
             Create new post{" "}
           </Typography>
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
-            {/* <TextField
-              id="outlined-basic"
-              variant="outlined"
-              sx={{ color: "#fff", margin: "10px 0" }}
-              onChange={(e) => setAuthor(e.target.value)}
-              value={author}
-            /> */}
-            <TextField
-              id="outlined-basic"
-              variant="outlined"
-              sx={{ mb: "10px" }}
-              onChange={(e) => setTitle(e.target.value)}
-              value={title}
-            />
-            <TextField
-              id="outlined-basic"
-              variant="outlined"
-              sx={{ mb: "10px" }}
-              onChange={(e) => setDescribe(e.target.value)}
-              value={describe}
-            />
-            <TextField
-              id="outlined-basic"
-              variant="outlined"
-              sx={{ mb: "10px" }}
-              onChange={(e) => setUrl(e.target.value)}
-              value={url}
-            />
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Box sx={{ display: "flex", flexDirection: "column" }}>
+              <TextField
+                {...register("author", { required: true })}
+                id="outlined-basic"
+                variant="outlined"
+                placeholder="Nick"
+                sx={{
+                  mb: "10px",
+                  "& input": {
+                    color: "#fff",
+                  },
+                }}
+                onChange={(e) => setAuthor(e.target.value)}
+                value={author}
+              />
+              <TextField
+                {...register("title", { required: true })}
+                id="outlined-basic"
+                variant="outlined"
+                placeholder="Title"
+                sx={{
+                  mb: "10px",
+                  "& input": {
+                    color: "#fff",
+                  },
+                }}
+                onChange={(e) => setTitle(e.target.value)}
+                value={title}
+              />
+              <TextField
+                {...register("description", { required: true })}
+                id="outlined-basic"
+                variant="outlined"
+                placeholder="Description"
+                sx={{
+                  mb: "10px",
+                  "& input": {
+                    color: "#fff",
+                  },
+                }}
+                onChange={(e) => setDescription(e.target.value)}
+                value={description}
+              />
 
-            <Button
-              sx={{
-                backgroundColor: "#1976d2",
-                color: "#fff",
-                margin: "10px 0",
-                "&:hover": { backgroundColor: "#1168bf" },
-              }}
-              onClick={() => createPost()}
-            >
-              Add new post
-            </Button>
-          </Box>
+              <TextField
+                {...register("url", { required: true })}
+                id="outlined-basic"
+                variant="outlined"
+                placeholder="Url image"
+                sx={{
+                  mb: "10px",
+                  "& input": {
+                    color: "#fff",
+                  },
+                }}
+                onChange={(e) => setUrl(e.target.value)}
+                value={url}
+              />
+              {errors.author?.type === "required" ||
+                errors.title?.type === "required" ||
+                errors.description?.type === "required" ||
+                (errors.url?.type === "required" && (
+                  <Typography
+                    sx={{
+                      color: "red",
+                      marginBottom: "10px",
+                      display: "flex",
+                      justifyContent: "center",
+                      gap: "4px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    <ErrorIcon /> All fields must be completed
+                  </Typography>
+                ))}
+              <Button
+                type="submit"
+                sx={{
+                  backgroundColor: "#1976d2",
+                  color: "#fff",
+                  margin: "10px 0",
+                  "&:hover": { backgroundColor: "#1168bf" },
+                }}
+              >
+                {isAdding ? "Adding..." : "Add new post "}
+              </Button>
+            </Box>
+          </form>
         </Box>
       </Modal>
     </Box>

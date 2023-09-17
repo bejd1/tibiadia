@@ -1,23 +1,25 @@
-import { Box, Button, Divider, TextField, Typography } from "@mui/material";
+import { Box, Divider, Typography } from "@mui/material";
 import { useQuery } from "react-query";
 import axios from "axios";
 import { Loading } from "../../components/loading";
 import { useState } from "react";
 import { v4 } from "uuid";
+import NestedModal from "../../components/modal";
 
 interface Todo {
   author?: string;
-  describe?: string;
-  img?: string;
+  description?: string;
+  url?: string;
   title?: string;
-  date?: string;
+  date: string;
   id?: string | undefined;
 }
 
 const Screenshots = () => {
   const [title, setTitle] = useState("");
-  const [describe, setDescribe] = useState("");
+  const [description, setDescription] = useState("");
   const [url, setUrl] = useState("");
+  const [author, setAuthor] = useState("");
 
   const dateObject = new Date();
   const date = dateObject.toLocaleString("en-US", { timeZone: "CET" });
@@ -27,7 +29,8 @@ const Screenshots = () => {
     const newPost = {
       id: postId,
       title: title,
-      describe: describe,
+      description: description,
+      author: author,
       url: url,
       date: date,
     };
@@ -37,10 +40,12 @@ const Screenshots = () => {
         newPost
       )
       .then((response) => {
-        console.log("New post added:", response.data);
-        setTitle("");
-        setDescribe("");
-        setUrl("");
+        setTimeout(() => {
+          setAuthor("");
+          setTitle("");
+          setDescription("");
+          setUrl("");
+        }, 2000);
       })
       .catch((error) => {
         // Handle errors
@@ -171,50 +176,51 @@ const Screenshots = () => {
         </div>
       ) : (
         screenshots
-          // ?.sort((a, b) => Date.parse(b.date) - Date.parse(a.date))
+          ?.sort((a, b) => Date.parse(b.date) - Date.parse(a.date))
           ?.map((screenshot, index) => {
             return (
               <Box
-                key={screenshot.id}
+                key={index}
                 sx={{
                   marginTop: "10px",
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "center",
                   alignItems: "center",
+                  position: "relative",
                 }}
               >
                 <Typography
                   variant="h4"
                   sx={{
-                    fontSize: "20px",
+                    fontSize: "24px",
                     marginBottom: "10px",
                     "@media (max-width: 600px)": {
-                      fontSize: "14px",
+                      fontSize: "18px",
                     },
                   }}
                 >
-                  {screenshot.title}
+                  {screenshot.title?.toUpperCase()}
                 </Typography>
                 <Typography
                   sx={{
                     marginBottom: "10px",
                     padding: "0 10px",
-                    fontSize: "18px",
+                    fontSize: "16px",
                     "@media (max-width: 600px)": {
-                      fontSize: "12px",
+                      fontSize: "13px",
                     },
                   }}
                 >
-                  {screenshot.describe}
+                  {screenshot.description}
                 </Typography>
                 <Box
                   component="img"
-                  src={screenshot.img}
-                  alt="Tibia Icon"
+                  src={screenshot.url}
+                  alt={screenshot.title}
                   sx={{
                     maxWidth: "1300px",
-                    marginBottom: "40px",
+                    marginBottom: "50px",
                     "@media (max-width: 1350px)": {
                       width: "90%",
                     },
@@ -223,10 +229,22 @@ const Screenshots = () => {
                     },
                   }}
                 />
+                <Box
+                  sx={{
+                    position: "absolute",
+                    right: "10px",
+                    bottom: "25px",
+                    marginBottom: "30px",
+                  }}
+                >
+                  <Typography sx={{ fontSize: "12px" }}>
+                    {screenshot.author} {screenshot.date}
+                  </Typography>
+                </Box>
                 {screenshots.length && index !== screenshots.length - 1 && (
                   <Divider
                     sx={{
-                      width: "100%",
+                      width: "70vw",
                       bgcolor: "white",
                       margin: "20px 0",
                     }}
@@ -236,40 +254,18 @@ const Screenshots = () => {
             );
           })
       )}
-      <Box
-        sx={{
-          position: "fixed",
-          right: "25px",
-          bottom: "25px",
-          bgcolor: "grey",
-        }}
-      >
-        <TextField
-          placeholder="TITLE"
-          id="outlined-basic"
-          variant="outlined"
-          sx={{ mb: "10px" }}
-          onChange={(e) => setTitle(e.target.value)}
-          value={title}
+      <Box sx={{ position: "fixed", bottom: "30px", right: "30px" }}>
+        <NestedModal
+          addNewPost={addNewPost}
+          title={title}
+          description={description}
+          url={url}
+          author={author}
+          setTitle={setTitle}
+          setDescription={setDescription}
+          setUrl={setUrl}
+          setAuthor={setAuthor}
         />
-        <TextField
-          placeholder="DESCRIPE"
-          id="outlined-basic"
-          variant="outlined"
-          sx={{ mb: "10px" }}
-          onChange={(e) => setDescribe(e.target.value)}
-          value={describe}
-        />
-        <TextField
-          placeholder="URL"
-          id="outlined-basic"
-          variant="outlined"
-          sx={{ mb: "10px" }}
-          onChange={(e) => setUrl(e.target.value)}
-          value={url}
-        />
-
-        <Button onClick={addNewPost}>Add new note</Button>
       </Box>
     </Box>
   );
