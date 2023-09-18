@@ -193,10 +193,13 @@ const Screenshots = () => {
                 <Typography
                   variant="h4"
                   sx={{
-                    fontSize: "24px",
-                    marginBottom: "10px",
+                    fontSize: "27px",
+                    marginBottom: "5px",
+                    fontFamily: "Fira Sans, sans-serif",
+                    fontWeight: "500",
+                    textShadow: "2px 2px 4px rgba(0, 0, 0, 0.1)",
                     "@media (max-width: 600px)": {
-                      fontSize: "18px",
+                      fontSize: "20px",
                     },
                   }}
                 >
@@ -208,11 +211,12 @@ const Screenshots = () => {
                     padding: "0 10px",
                     fontSize: "16px",
                     "@media (max-width: 600px)": {
-                      fontSize: "13px",
+                      fontSize: "14px",
                     },
                   }}
                 >
-                  {screenshot.description}
+                  {screenshot.description?.charAt(0).toUpperCase()}
+                  {screenshot.description?.slice(1)}
                 </Typography>
                 <Box
                   component="img"
@@ -234,10 +238,18 @@ const Screenshots = () => {
                     position: "absolute",
                     right: "10px",
                     bottom: "25px",
-                    marginBottom: "30px",
+                    marginBottom: "35px",
+                    "@media (max-width: 400px)": {
+                      bottom: "25px",
+                    },
                   }}
                 >
-                  <Typography sx={{ fontSize: "12px" }}>
+                  <Typography
+                    sx={{
+                      fontSize: "14px",
+                      textShadow: "2px 2px 4px rgba(0, 0, 0, 0.8)",
+                    }}
+                  >
                     {screenshot.author} {screenshot.date}
                   </Typography>
                 </Box>

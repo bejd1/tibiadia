@@ -119,7 +119,8 @@ const HighScores = () => {
                   rel="noopener noreferrer"
                   sx={{
                     display: "flex",
-                    justifyContent: "left",
+                    textAlign: "left",
+                    alignItems: "center",
                     textDecoration: "none",
                     color: "#fff",
                     fontFamily: "Roboto, sans-serif",
@@ -176,22 +177,28 @@ const HighScores = () => {
             <Loading />
           </Box>
         )}
-        <Box sx={{ display: "flex", justifyContent: "center", mt: "20px" }}>
-          <Pagination
-            count={_DATA.maxPage}
-            page={_DATA.currentPage}
-            variant="outlined"
-            shape="rounded"
-            onChange={(e, page) => _DATA.jump(page)}
-            sx={{
-              "& .MuiPaginationItem-root": {
-                color: "white",
-              },
-              "& .MuiPaginationItem-page.Mui-selected": {
-                backgroundColor: "#1a1a1c",
-              },
-            }}
-          />
+        <Box>
+          {highScores ? (
+            <Box sx={{ display: "flex", justifyContent: "center", mt: "20px" }}>
+              <Pagination
+                count={_DATA.maxPage}
+                page={_DATA.currentPage}
+                variant="outlined"
+                shape="rounded"
+                onChange={(e, page) => _DATA.jump(page)}
+                sx={{
+                  "& .MuiPaginationItem-root": {
+                    color: "white",
+                  },
+                  "& .MuiPaginationItem-page.Mui-selected": {
+                    backgroundColor: "#1a1a1c",
+                  },
+                }}
+              />
+            </Box>
+          ) : (
+            <Box></Box>
+          )}
         </Box>
       </Box>
     </Box>

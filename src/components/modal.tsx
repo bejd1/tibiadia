@@ -13,7 +13,6 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
   bgcolor: "#1d2124",
   boxShadow: 24,
   pt: 2,
@@ -78,7 +77,7 @@ export default function NestedModal({
   };
 
   return (
-    <Box>
+    <Box sx={{ width: "90%" }}>
       <Fab
         onClick={handleOpen}
         color="primary"
@@ -93,7 +92,15 @@ export default function NestedModal({
         aria-labelledby="parent-modal-title"
         aria-describedby="parent-modal-description"
       >
-        <Box sx={{ ...style, width: 500 }}>
+        <Box
+          sx={{
+            ...style,
+            width: 500,
+            "@media (max-width: 502px)": {
+              width: "90%",
+            },
+          }}
+        >
           <Box
             onClick={handleClose}
             sx={{

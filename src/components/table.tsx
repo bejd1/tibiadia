@@ -549,10 +549,24 @@ export default function CollapsibleTable({
 
                                   return (
                                     <Box key={index}>
-                                      <Typography sx={{ fontSize: "15px" }}>
+                                      <Typography
+                                        sx={{
+                                          fontSize: "15px",
+                                          "@media (max-width: 500px)": {
+                                            fontSize: "13px",
+                                          },
+                                        }}
+                                      >
                                         Killed by: {dead?.reason}
                                       </Typography>
-                                      <Typography sx={{ fontSize: "15px" }}>
+                                      <Typography
+                                        sx={{
+                                          fontSize: "15px",
+                                          "@media (max-width: 500px)": {
+                                            fontSize: "13px",
+                                          },
+                                        }}
+                                      >
                                         Date: {newDeadTime}
                                       </Typography>
                                       {index !==
@@ -570,14 +584,17 @@ export default function CollapsibleTable({
                                 })
                               ) : (
                                 <Typography
-                                  style={{
+                                  sx={{
                                     fontSize: "15px",
                                     display: "flex",
                                     flexDirection: "row",
                                     marginBottom: "2px",
+                                    "@media (max-width: 500px)": {
+                                      fontSize: "13px",
+                                    },
                                   }}
                                 >
-                                  No death in the last month, great job! 😎
+                                  No death in the last month, good job! 😎
                                 </Typography>
                               )}
                             </Box>

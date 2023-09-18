@@ -72,7 +72,6 @@ const SharedCalculator = () => {
           />
           <Button
             sx={{
-              backgroundColor: "lime",
               color: "white",
               border: "none",
               padding: "3px 10px",
@@ -81,12 +80,13 @@ const SharedCalculator = () => {
               cursor: "pointer",
               letterSpacing: "0.3px",
               marginLeft: "10px",
+              backgroundColor: "#1976d2",
               "@media (max-width: 340px)": {
                 marginTop: "10px",
                 marginLeft: "0",
                 width: "70%",
               },
-              "&:hover": { backgroundColor: "#03b303" },
+              "&:hover": { backgroundColor: "#1168bf" },
             }}
             type="submit"
             onClick={() => setShowText(true)}

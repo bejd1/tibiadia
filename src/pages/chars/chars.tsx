@@ -38,35 +38,42 @@ const Characters: React.FC = () => {
     return response.data;
   });
 
+  // const { data2: data1 } = useQuery<CharsT[]>("screens", async () => {
+  //   const response = await axios.get<CharsT[]>(
+  //     const charspro = nickNamesnickNames.map(async (name) => {
+  //     `https://api.tibiadata.com/v3/character/${name.name}`
+  //     }
+  //   );
+  //   return response.data2;
+  // });
+
   useEffect(() => {
-    const fetchCharactersWithDelay = async () => {
+    const fetchCharacters = async () => {
       try {
         if (nickNames) {
-          setTimeout(async () => {
-            const characterPromises = nickNames.map(async (name) => {
-              try {
-                const response = await fetch(
-                  `https://api.tibiadata.com/v3/character/${name.name}`
-                );
-                const data = await response.json();
-                setIsLoading(false);
-                return data.characters;
-              } catch (error) {
-                console.error(`Error fetching character ${name}:`, error);
-                return null;
-              }
-            });
+          const characterPromises = nickNames.map(async (name) => {
+            try {
+              const response = await fetch(
+                `https://api.tibiadata.com/v3/character/${name.name}`
+              );
+              const data = await response.json();
+              setIsLoading(false);
+              return data.characters;
+            } catch (error) {
+              console.error(`Error fetching character ${name}:`, error);
+              return null;
+            }
+          });
 
-            const charactersData = await Promise.all(characterPromises);
-            setCharacters(charactersData.filter((data) => data !== null));
-          }, 1000);
+          const charactersData = await Promise.all(characterPromises);
+          setCharacters(charactersData.filter((data) => data !== null));
         }
       } catch (error) {
         console.error("Error fetching characters:", error);
       }
     };
 
-    fetchCharactersWithDelay();
+    fetchCharacters();
   }, [nickNames]);
 
   return (
@@ -89,7 +96,7 @@ const Characters: React.FC = () => {
           },
         }}
       >
-        Characters
+        Hall of fame
       </Typography>
       <Divider
         sx={{
@@ -102,7 +109,6 @@ const Characters: React.FC = () => {
           },
         }}
       />
-      <Box></Box>
       <CollapsibleTable characters={characters} />
       {isLoading && (
         <Box
