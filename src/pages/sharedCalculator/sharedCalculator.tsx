@@ -102,8 +102,8 @@ const SharedCalculator = () => {
             marginTop: "20px",
           }}
         >
-          A character with level can share experience with levels {secondNum} to{" "}
-          {firstNum}.
+          A character with this level can share experience with levels{" "}
+          {secondNum} to {firstNum}.
         </Typography>
       ) : (
         " "
