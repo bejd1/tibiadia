@@ -60,7 +60,7 @@ const HighScores = () => {
       <Typography
         variant="h1"
         sx={{
-          fontSize: "34px",
+          fontSize: "45px",
           marginBottom: "2px",
           marginTop: "70px",
           "@media (max-width: 400px)": {
@@ -74,10 +74,11 @@ const HighScores = () => {
         sx={{
           width: "10%",
           bgcolor: "#fff",
-          marginBottom: "20px",
+          marginBottom: "30px",
           height: "0.5px",
           "@media (max-width: 600px)": {
             width: "20%",
+            marginBottom: "20px",
           },
         }}
       />

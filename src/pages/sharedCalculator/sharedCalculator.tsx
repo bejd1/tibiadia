@@ -31,7 +31,7 @@ const SharedCalculator = () => {
       <Typography
         variant="h1"
         sx={{
-          fontSize: "34px",
+          fontSize: "45px",
           marginTop: "70px",
           marginBottom: "2px",
           "@media (max-width: 992px)": {
@@ -48,10 +48,11 @@ const SharedCalculator = () => {
         sx={{
           width: "10%",
           bgcolor: "#fff",
-          marginBottom: "20px",
+          marginBottom: "30px",
           height: "0.5px",
           "@media (max-width: 600px)": {
             width: "20%",
+            marginBottom: "20px",
           },
         }}
       />

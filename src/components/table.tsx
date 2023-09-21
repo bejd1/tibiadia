@@ -19,27 +19,28 @@ import { BiStats } from "@react-icons/all-files/bi/BiStats";
 import { Divider, Typography } from "@mui/material";
 import tibiaComIcon from "../images/tibiaIcon.png";
 
-type CharsT = {
-  deaths?: DeathsT[] | null;
-  character: CharT;
-};
-
-type CharT = {
+interface Character {
   name: string;
   level: number;
   vocation: string;
-};
+}
+interface Death {
+  reason?: string;
+  time?: string;
+  level?: number;
+}
 
-type DeathsT = {
-  reason: string;
-  time: string;
-  level: number;
-};
+interface CharacterData {
+  characters: {
+    character: Character;
+    deaths: Death[];
+  };
+}
 
 export default function CollapsibleTable({
   characters,
 }: {
-  characters: CharsT[];
+  characters: CharacterData;
 }) {
   const [openRows, setOpenRows] = useState<boolean[]>(
     Array(characters.length).fill(false)

@@ -57,10 +57,13 @@ export const Nav = () => {
         }}
       >
         <Typography
-          style={{
+          sx={{
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            // padding: "7px 12px",
+            // borderRadius: "5px",
+            // "&:hover": { boxShadow: "2px 2px 4px rgba(0, 0, 0, 0.2)" },
           }}
         >
           <PhotoIcon
@@ -77,7 +80,16 @@ export const Nav = () => {
             Screenshots
           </Link>
         </Typography>
-        <Typography style={{ display: "flex", alignItems: "center" }}>
+        <Typography
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            // padding: "7px 12px",
+            // borderRadius: "5px",
+            // "&:hover": { boxShadow: "2px 2px 4px rgba(0, 0, 0, 0.2)" },
+          }}
+        >
           <FaCrown
             style={{
               fontSize: "16px",
@@ -93,7 +105,16 @@ export const Nav = () => {
             Highscores
           </Link>
         </Typography>
-        <Typography>
+        <Typography
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            // padding: "7px 12px",
+            // borderRadius: "5px",
+            // "&:hover": { boxShadow: "2px 2px 4px rgba(0, 0, 0, 0.2)" },
+          }}
+        >
           <ShieldIcon
             style={{
               fontSize: "16px",
