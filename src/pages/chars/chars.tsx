@@ -2,6 +2,7 @@ import { useQuery } from "react-query";
 import { Box, Divider, Typography } from "@mui/material";
 import axios from "axios";
 import { CollapsibleTable } from "../../components/table";
+import { Loading } from "../../components/loading";
 
 interface Character {
   name: string;
@@ -47,19 +48,56 @@ const Characters = () => {
   const {
     data: characters,
     isLoading,
-    isError,
+    error,
   } = useQuery("characterData", () =>
     Promise.all(names.map((name) => fetchCharacterData(name)))
   );
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  if (isLoading)
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <Box
+          sx={{
+            boxShadow: "0 3px 10px rgb(0 0 0 / 0.2)",
+            bgcolor: "#212121",
+            borderRadius: "10px",
+            padding: "25px",
+          }}
+        >
+          <Loading />
+        </Box>
+      </Box>
+    );
 
-  if (isError) {
-    return <div>Error occurred while fetching data.</div>;
-  }
-
+  if (error)
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <Box
+          sx={{
+            boxShadow: "0 3px 10px rgb(0 0 0 / 0.2)",
+            bgcolor: "#212121",
+            borderRadius: "10px",
+            padding: "25px",
+          }}
+        >
+          <Typography>Somethink went wrong 😒</Typography>
+        </Box>
+      </Box>
+    );
   return (
     <Box
       style={{

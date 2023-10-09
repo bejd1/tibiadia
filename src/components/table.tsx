@@ -395,11 +395,11 @@ export const CollapsibleTable: React.FC<TableProps> = ({ characters = [] }) => {
                       align="right"
                       sx={{
                         color: "#fff",
-                        width: "70px",
+                        width: "50px",
                         paddingRight: "25px",
                         "@media (max-width: 400px)": {
                           padding: 0,
-                          width: "40px",
+                          width: "10px",
                         },
                       }}
                     >
