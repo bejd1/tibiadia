@@ -1,8 +1,7 @@
 import { useQuery } from "react-query";
 import { Box, Divider, Typography } from "@mui/material";
 import axios from "axios";
-import { Table } from "../../components/table";
-// import CollapsibleTable from "../../components/table";
+import { CollapsibleTable } from "../../components/table";
 
 interface Character {
   name: string;
@@ -18,7 +17,7 @@ interface Death {
 interface CharacterData {
   characters: {
     character: Character;
-    deaths: Death;
+    deaths: Death[];
   };
 }
 
@@ -95,12 +94,8 @@ const Characters = () => {
           },
         }}
       />
-      {characters?.map((characters) => {
-        return <div>{characters.character.name}</div>;
-      })}
-      {/* <Table characters={characters} /> */}
 
-      {/* <CollapsibleTable characters={characters} /> */}
+      <CollapsibleTable characters={characters} />
     </Box>
   );
 };
