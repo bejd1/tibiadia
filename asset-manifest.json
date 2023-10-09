@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/tibiadia/static/css/main.e4249539.css",
-    "main.js": "/tibiadia/static/js/main.8962d32b.js",
+    "main.js": "/tibiadia/static/js/main.7313bec3.js",
     "static/media/tibiaIcon.png": "/tibiadia/static/media/tibiaIcon.92b9e71e794eb5e51889.png",
     "static/media/tibialogo.png": "/tibiadia/static/media/tibialogo.5bf44285faaed66d3c80.png",
     "static/media/demon.gif": "/tibiadia/static/media/demon.f51d08523cec2558ed82.gif",
@@ -9,10 +9,10 @@
     "static/media/dragon_lord.gif": "/tibiadia/static/media/dragon_lord.addf9f30fc2ed3e8a206.gif",
     "index.html": "/tibiadia/index.html",
     "main.e4249539.css.map": "/tibiadia/static/css/main.e4249539.css.map",
-    "main.8962d32b.js.map": "/tibiadia/static/js/main.8962d32b.js.map"
+    "main.7313bec3.js.map": "/tibiadia/static/js/main.7313bec3.js.map"
   },
   "entrypoints": [
     "static/css/main.e4249539.css",
-    "static/js/main.8962d32b.js"
+    "static/js/main.7313bec3.js"
   ]
 }
